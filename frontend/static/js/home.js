@@ -1,3 +1,16 @@
+function apiRequest(url) {
+    // 保留原始URL，不添加查询参数
+    return fetch(url, {
+        headers: {
+            'Cache-Control': 'no-cache, no-store',
+            'Pragma': 'no-cache',
+            // 添加Authorization头确保认证状态
+            //'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            // 添加自定义头作为缓存打破器
+            'X-Cache-Buster': Date.now()
+        }
+    });
+}
 // 更新系统状态
 function updateSystemStatus() {
     fetch('/api/metrics/latest')
@@ -75,7 +88,7 @@ function animateNumber(element, target) {
 
 // 更新统计数据
 function updateStats() {
-    fetch('/api/stats/dashboard')
+    apiRequest('/api/stats/dashboard')
         .then(response => response.json())
         .then(data => {
             // 更新今日请求
@@ -157,7 +170,7 @@ function initCharts() {
 
 // 更新Token使用趋势图表
 function updateTokenChart(period) {
-    fetch(`/api/stats/tokens?period=${period}`)
+    apiRequest(`/api/stats/tokens?period=${period}`)
         .then(response => response.json())
         .then(data => {
             const chartData = Array.isArray(data) ? data : [];

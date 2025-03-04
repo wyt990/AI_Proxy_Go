@@ -12,7 +12,7 @@ type User struct {
 	Email        string    `gorm:"size:100;uniqueIndex;not null" json:"email"`
 	Role         string    `gorm:"size:20;not null;default:'user'" json:"role"`
 	IsActive     bool      `gorm:"not null;default:true" json:"is_active"`
-	LastLogin    time.Time `gorm:"type:datetime;null"`
+	LastLogin    time.Time `gorm:"type:datetime;null" json:"last_login"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 

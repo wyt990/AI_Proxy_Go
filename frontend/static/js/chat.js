@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 加载模型列表
     function loadModels(providerId) {
-        console.log('开始加载模型列表，服务商ID:', providerId);
+        //console.log('开始加载模型列表，服务商ID:', providerId);
         modelSelect.disabled = !providerId;
         if (!providerId) {
             modelSelect.innerHTML = '<option value="">请先选择服务商</option>';
@@ -1708,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function scrollToBottom() {
         const chatMessages = document.getElementById('chatMessages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        console.log('滚动到底部');
+        //console.log('滚动到底部');
     }
 
     // 启动初始化

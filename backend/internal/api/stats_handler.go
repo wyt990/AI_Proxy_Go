@@ -122,6 +122,10 @@ type ModelUsageStats struct {
 
 // GetTokenStats 获取Token使用趋势
 func (h *StatsHandler) GetTokenStats(c *gin.Context) {
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	period := c.DefaultQuery("period", "day") // day, week, month
 
 	var stats []TokenStats
@@ -160,6 +164,9 @@ func (h *StatsHandler) GetTokenStats(c *gin.Context) {
 
 // GetModelUsage 获取模型使用分布
 func (h *StatsHandler) GetModelUsage(c *gin.Context) {
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	var stats []ModelUsageStats
 	var total int64
 
@@ -207,6 +214,9 @@ type ProviderStats struct {
 
 // GetRequestMonitor 获取实时请求监控数据
 func (h *StatsHandler) GetRequestMonitor(c *gin.Context) {
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	var stats []RequestStats
 
 	// 获取最近30分钟的数据，按分钟统计
@@ -231,6 +241,9 @@ func (h *StatsHandler) GetRequestMonitor(c *gin.Context) {
 
 // GetProviderStats 获取服务商统计数据
 func (h *StatsHandler) GetProviderStats(c *gin.Context) {
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	period := c.DefaultQuery("period", "day")
 	var stats []ProviderStats
 
@@ -272,6 +285,9 @@ type TokenRankStats struct {
 
 // GetTokenRanking 获取Token消耗排行
 func (h *StatsHandler) GetTokenRanking(c *gin.Context) {
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	var stats []TokenRankStats
 	today := time.Now().Format("2006-01-02")
 	yesterday := time.Now().AddDate(0, 0, -1).Format("2006-01-02")
