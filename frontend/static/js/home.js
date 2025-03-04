@@ -1,19 +1,6 @@
-function apiRequest(url) {
-    // 保留原始URL，不添加查询参数
-    return fetch(url, {
-        headers: {
-            'Cache-Control': 'no-cache, no-store',
-            'Pragma': 'no-cache',
-            // 添加Authorization头确保认证状态
-            //'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            // 添加自定义头作为缓存打破器
-            'X-Cache-Buster': Date.now()
-        }
-    });
-}
 // 更新系统状态
 function updateSystemStatus() {
-    fetch('/api/metrics/latest')
+    apiRequest('/api/metrics/latest')
         .then(response => response.json())
         .then(data => {
             // 更新CPU使用率
@@ -244,7 +231,7 @@ function updateTokenChart(period) {
 
 // 更新模型使用分布图表
 function updateModelChart() {
-    fetch('/api/stats/model-usage')
+    apiRequest('/api/stats/model-usage')
         .then(response => response.json())
         .then(data => {
             const chartData = Array.isArray(data) ? data : [];
@@ -309,7 +296,7 @@ function updateModelChart() {
 
 // 更新实时请求监控
 function updateRequestMonitor() {
-    fetch('/api/stats/request-monitor')
+    apiRequest('/api/stats/request-monitor')
         .then(response => response.json())
         .then(data => {
             const chartData = Array.isArray(data) ? data : [];
@@ -403,7 +390,7 @@ function updateRequestMonitor() {
 
 // 更新服务商统计
 function updateProviderStats(period) {
-    fetch(`/api/stats/provider-stats?period=${period}`)
+    apiRequest(`/api/stats/provider-stats?period=${period}`)
         .then(response => response.json())
         .then(data => {
             const chartData = Array.isArray(data) ? data : [];
@@ -594,7 +581,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // 更新Token消耗排行
 function updateTokenRanking() {
-    fetch('/api/stats/token-ranking')
+    apiRequest('/api/stats/token-ranking')
         .then(response => response.json())
         .then(data => {
             const tbody = document.querySelector('.token-ranking tbody');

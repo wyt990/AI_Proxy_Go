@@ -26,13 +26,17 @@ type Claims struct {
 // AuthMiddleware 认证中间件
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 跳过登录和安装相关的路由
-		if c.Request.URL.Path == "/login" ||
-			c.Request.URL.Path == "/install" ||
-			c.Request.URL.Path == "/favicon.ico" ||
-			strings.HasPrefix(c.Request.URL.Path, "/static/") ||
-			strings.HasPrefix(c.Request.URL.Path, "/api/login") ||
-			strings.HasPrefix(c.Request.URL.Path, "/api/install") {
+		// 获取路径（忽略查询参数）
+		path := c.Request.URL.Path
+		
+		// 跳过不需要认证的路径
+		if path == "/login" ||
+		   path == "/install" ||
+		   path == "/favicon.ico" ||
+		   strings.HasPrefix(path, "/static/") ||
+		   strings.HasPrefix(path, "/api/login") ||
+		   strings.HasPrefix(path, "/api/install") ||
+		   strings.HasPrefix(path, "/api/captcha") {
 			c.Next()
 			return
 		}

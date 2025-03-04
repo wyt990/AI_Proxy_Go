@@ -76,6 +76,11 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 
 // GetUsers 获取用户列表
 func (h *UserHandler) GetUsers(c *gin.Context) {
+	// 添加缓存控制头
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	// 获取分页参数
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "20"))

@@ -55,7 +55,7 @@ function initEventListeners() {
 // 加载用户列表
 async function loadUsers() {
     try {
-        const response = await fetch(`/api/users?page=${currentPage}&pageSize=${pageSize}`);
+        const response = await apiRequest(`/api/users?page=${currentPage}&pageSize=${pageSize}`);
         const data = await response.json();
 
         if (data.error) {
@@ -174,10 +174,9 @@ async function saveUser() {
     }
 
     try {
-        const response = await fetch(isEdit ? `/api/users/${userId}` : '/api/users', {
+        const response = await apiRequest(isEdit ? `/api/users/${userId}` : '/api/users', {
             method: isEdit ? 'PUT' : 'POST',
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(userData)
@@ -201,7 +200,7 @@ async function saveUser() {
 // 编辑用户
 async function editUser(id) {
     try {
-        const response = await fetch(`/api/users/${id}`);
+        const response = await apiRequest(`/api/users/${id}`);
         const data = await response.json();
 
         if (data.error) {
@@ -222,7 +221,7 @@ async function deleteUser(id) {
     }
 
     try {
-        const response = await fetch(`/api/users/${id}`, {
+        const response = await apiRequest(`/api/users/${id}`, {
             method: 'DELETE'
         });
 

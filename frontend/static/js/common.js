@@ -233,4 +233,28 @@ function setupAjaxInterceptor() {
 }
 
 // 初始化时设置拦截器
-setupAjaxInterceptor(); 
+setupAjaxInterceptor();
+
+// 添加统一的API请求函数
+function apiRequest(url, options = {}) {
+    // 合并默认选项和用户提供的选项
+    const defaultOptions = {
+        headers: {
+            'Cache-Control': 'no-cache, no-store',
+            'Pragma': 'no-cache',
+            //'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'X-Cache-Buster': Date.now()
+        }
+    };
+    
+    // 深度合并headers
+    const mergedOptions = {
+        ...options,
+        headers: {
+            ...defaultOptions.headers,
+            ...(options.headers || {})
+        }
+    };
+    
+    return fetch(url, mergedOptions);
+} 
