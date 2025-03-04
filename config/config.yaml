@@ -6,7 +6,7 @@ database:
     host: localhost
     port: 3306
     username: AI_Proxy_Go
-    password: 
+    password: Pc2ccw30
     database: AI_Proxy_Go
 redis:
     host: localhost

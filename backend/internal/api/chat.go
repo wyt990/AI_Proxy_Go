@@ -48,7 +48,7 @@ func NewChatHandler(db *gorm.DB) *ChatHandler {
 func (h *ChatHandler) GetProviders(c *gin.Context) {
 	var providers []m.AI_Provider
 	if err := h.DB.Where("status = ?", "NORMAL").Find(&providers).Error; err != nil {
-		//log.Printf("查询服务商失败: %v", err)
+		log.Printf("查询服务商失败: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取服务商列表失败"})
 		return
 	}
@@ -64,6 +64,10 @@ func (h *ChatHandler) GetProviders(c *gin.Context) {
 			"type": p.Type,
 		})
 	}
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{
 		"items": items,
@@ -108,6 +112,9 @@ func (h *ChatHandler) GetProviderModels(c *gin.Context) {
 	}
 
 	//log.Printf("返回数据: %+v", items)
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{
 		"items": items,
@@ -129,6 +136,10 @@ func (h *ChatHandler) GetProviderKeys(c *gin.Context) {
 	// 查询用户的私钥
 	h.DB.Where("provider_id = ? AND type = ? AND user_id = ? AND is_active = ?",
 		providerId, "PRIVATE", userId, true).Find(&privateKeys)
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{
 		"publicKeys":  publicKeys,
@@ -209,9 +220,12 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 	if useStream {
 		// 设置SSE响应头
 		c.Header("Content-Type", "text/event-stream")
-		c.Header("Cache-Control", "no-cache")
 		c.Header("Connection", "keep-alive")
 		c.Header("Transfer-Encoding", "chunked")
+		c.Header("X-Accel-Buffering", "no")
+		c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+		c.Header("Pragma", "no-cache")
+		c.Header("Expires", "0")
 
 		// 发送开始事件
 		c.SSEvent("message", gin.H{
@@ -356,6 +370,9 @@ func (h *ChatHandler) SendMessage(c *gin.Context) {
 		}(stats)
 
 		// 普通JSON响应
+		c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+		c.Header("Pragma", "no-cache")
+		c.Header("Expires", "0")
 		c.JSON(http.StatusOK, gin.H{
 			"content":            chatResp.Content,
 			"userMessageId":      userMessage.ID,
@@ -392,6 +409,10 @@ func (h *ChatHandler) GetHistory(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取历史记录失败"})
 		return
 	}
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{
 		"items": messages,
@@ -453,5 +474,8 @@ func (h *ChatHandler) GetSessionMessages(c *gin.Context) {
 	//log.Printf("找到 %d 条消息", len(messages))
 
 	// 直接返回消息数组
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 	c.JSON(http.StatusOK, messages)
 }

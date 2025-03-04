@@ -51,6 +51,10 @@ func (h *ChatSessionHandler) ListSessions(c *gin.Context) {
 		})
 	}
 
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	c.JSON(http.StatusOK, gin.H{
 		"items": result,
 		"total": len(sessions),
@@ -97,6 +101,10 @@ func (h *ChatSessionHandler) CreateSession(c *gin.Context) {
 		return
 	}
 
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	c.JSON(http.StatusOK, session)
 }
 
@@ -111,6 +119,10 @@ func (h *ChatSessionHandler) ArchiveSession(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "归档会话失败"})
 		return
 	}
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{"message": "会话已归档"})
 }
@@ -131,6 +143,10 @@ func (h *ChatSessionHandler) GetSessionMessages(c *gin.Context) {
 		return
 	}
 
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	//log.Printf("找到 %d 条消息", len(messages))
 	c.JSON(http.StatusOK, messages)
 }
@@ -147,6 +163,10 @@ func (h *ChatSessionHandler) GetSession(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "会话不存在"})
 		return
 	}
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, session)
 }
@@ -171,6 +191,10 @@ func (h *ChatSessionHandler) UpdateSession(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "更新会话失败"})
 		return
 	}
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{"message": "更新成功"})
 }
@@ -201,6 +225,10 @@ func (h *ChatSessionHandler) DeleteSession(c *gin.Context) {
 
 	// 提交事务
 	tx.Commit()
+
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
 
 	c.JSON(http.StatusOK, gin.H{"message": "删除成功"})
 }

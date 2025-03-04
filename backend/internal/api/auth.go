@@ -24,12 +24,14 @@ func (h *AuthHandler) GetUserInfo(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
 		c.JSON(400, gin.H{"error": "未登录"})
+		log.Printf("未登录，获取用户信息失败")
 		return
 	}
 
 	var user model.User
 	if err := h.DB.First(&user, userID).Error; err != nil {
 		c.JSON(500, gin.H{"error": "获取用户信息失败"})
+		log.Printf("获取用户信息失败: %v", err)
 		return
 	}
 

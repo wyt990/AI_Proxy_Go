@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 从localStorage获取用户信息
     const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
     //console.log('User info:', currentUser);
-    //console.log('User id:', currentUser.id);
+    console.log('User id:', currentUser.id);
 
 
     // 添加新的变量
@@ -80,7 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 加载服务商列表
     function loadProviders() {
-        fetch('/api/chat/providers')
+        console.log('开始加载服务商列表');
+        fetch('/api/chat/providers', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 providerSelect.innerHTML = '<option value="">请选择服务商</option>';
@@ -90,6 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                 });
             })
+            
             .catch(error => {
                 //console.error('加载服务商列表失败:', error);
                 providerSelect.innerHTML = '<option value="">加载失败，请刷新重试</option>';
@@ -98,14 +104,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 加载模型列表
     function loadModels(providerId) {
-        //console.log('开始加载模型列表，服务商ID:', providerId);
+        console.log('开始加载模型列表，服务商ID:', providerId);
         modelSelect.disabled = !providerId;
         if (!providerId) {
             modelSelect.innerHTML = '<option value="">请先选择服务商</option>';
             return Promise.resolve();
         }
 
-        return fetch(`/api/chat/provider/${providerId}/models`)
+        return fetch(`/api/chat/provider/${providerId}/models`,{
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 //console.log('收到模型数据:', data);
@@ -212,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
             keySelect.innerHTML = '<option value="">请先选择服务商</option>';
             return Promise.resolve();
         }
-
+        console.log('开始加载密钥列表，服务商ID:', providerId);
         return fetch(`/api/chat/provider/${providerId}/keys`)
             .then(response => response.json())
             .then(data => {
@@ -368,7 +378,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     try {
                         // 调用后端API删除消息
                         const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                            method: 'DELETE'
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            }
                         });
 
                         //console.log('删除消息响应:', {
@@ -387,7 +400,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             const nextMessageId = nextMessage.dataset.messageId;
                             // 删除关联的回复消息
                             await fetch(`/api/chat/messages/${nextMessageId}?userId=${currentUser.id}`, {
-                                method: 'DELETE'
+                                method: 'DELETE',
+                                headers: {
+                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                }
                             });
                             nextMessage.remove();
                         }
@@ -479,7 +495,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     try {
                         // 调用后端API删除消息
                         const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                            method: 'DELETE'
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                            }
                         });
 
                         //console.log('删除消息响应:', {
@@ -499,7 +518,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const prevMessageId = prevMessage.dataset.messageId;
                                 // 删除关联的用户消息
                                 await fetch(`/api/chat/messages/${prevMessageId}?userId=${currentUser.id}`, {
-                                    method: 'DELETE'
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                    }
                                 });
                                 prevMessage.remove();
                             }
@@ -583,7 +605,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'text/event-stream'
+                    'Accept': 'text/event-stream',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 body: JSON.stringify(requestData)
             });
@@ -666,6 +689,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                             aiMessageDiv.className = 'message assistant';
                                             aiMessageDiv.innerHTML = MESSAGE_TEMPLATE.assistant(marked.parse(displayContent));
 
+                                            // 强制浏览器重绘
+                                            void aiMessageDiv.offsetHeight;
+
                                             // 移除加载动画
                                             const loadingDiv = aiMessageDiv.querySelector('.loading-animation');
                                             if (loadingDiv) {
@@ -716,7 +742,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                                         try {
                                                             const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                                                                method: 'DELETE'
+                                                                method: 'DELETE',
+                                                                headers: {
+                                                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                                }
                                                             });
 
                                                             if (!response.ok) {
@@ -730,7 +759,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                                 if (confirm('是否同时删除相关的提问消息？')) {
                                                                     const prevMessageId = prevMessage.dataset.messageId;
                                                                     await fetch(`/api/chat/messages/${prevMessageId}?userId=${currentUser.id}`, {
-                                                                        method: 'DELETE'
+                                                                        method: 'DELETE',
+                                                                        headers: {
+                                                                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                                        }
                                                                     });
                                                                     prevMessage.remove();
                                                                 }
@@ -860,7 +892,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                             try {
                                 const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                                    method: 'DELETE'
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                    }
                                 });
 
                                 if (!response.ok) {
@@ -874,7 +909,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                     if (confirm('是否同时删除相关的提问消息？')) {
                                         const prevMessageId = prevMessage.dataset.messageId;
                                         await fetch(`/api/chat/messages/${prevMessageId}?userId=${currentUser.id}`, {
-                                            method: 'DELETE'
+                                            method: 'DELETE',
+                                            headers: {
+                                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                            }
                                         });
                                         prevMessage.remove();
                                     }
@@ -908,9 +946,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 初始化时加载会话列表和最新会话
     function initialize() {
+        console.log('开始加载会话列表');
         loadProviders();
         loadSessions();
-        
+        console.log('会话列表加载完成');
         // 添加标签页功能
         const tabButtons = document.querySelectorAll('.tab-btn');
         const tabPanes = document.querySelectorAll('.tab-pane');
@@ -943,7 +982,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 修改加载会话列表函数
     function loadSessions() {
-        return fetch(`/api/chat/sessions?userId=${currentUser.id}`)
+        console.log('开始加载会话列表');
+        return fetch(`/api/chat/sessions?userId=${currentUser.id}`,{
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 const sessionList = document.getElementById('sessionList');
@@ -1061,6 +1105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 修改加载会话消息函数
     async function loadSessionMessages(sessionId) {
         try {
+            console.log('开始加载会话消息');
             const response = await fetch(`/api/chat/sessions/${sessionId}/messages`);
             const data = await response.json();
             
@@ -1083,9 +1128,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // 修改加载会话消息函数
     function loadSession(sessionId) {
         currentSessionId = sessionId;
-        
+        console.log('开始加载会话消息');
         // 先获取会话详情
-        fetch(`/api/chat/sessions/${sessionId}?userId=${currentUser.id}`)
+        fetch(`/api/chat/sessions/${sessionId}?userId=${currentUser.id}`,{
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -1111,7 +1160,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 // 加载会话消息
-                return fetch(`/api/chat/sessions/${sessionId}/messages?userId=${currentUser.id}`);
+                return fetch(`/api/chat/sessions/${sessionId}/messages?userId=${currentUser.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
             })
             .then(response => {
                 if (!response.ok) {
@@ -1210,7 +1263,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                     try {
                                         const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                                            method: 'DELETE'
+                                            method: 'DELETE',
+                                            headers: {
+                                                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                            }
                                         });
 
                                         if (!response.ok) {
@@ -1222,7 +1278,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                         if (nextMessage && nextMessage.classList.contains('assistant')) {
                                             const nextMessageId = nextMessage.dataset.messageId;
                                             await fetch(`/api/chat/messages/${nextMessageId}?userId=${currentUser.id}`, {
-                                                method: 'DELETE'
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                }
                                             });
                                             nextMessage.remove();
                                         }
@@ -1292,7 +1351,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                         try {
                                             const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                                                method: 'DELETE'
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                }
                                             });
 
                                             //console.log('删除请求响应:', response); // 调试日志
@@ -1308,7 +1370,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 if (confirm('是否同时删除相关的提问消息？')) {
                                                     const prevMessageId = prevMessage.dataset.messageId;
                                                     await fetch(`/api/chat/messages/${prevMessageId}?userId=${currentUser.id}`, {
-                                                        method: 'DELETE'
+                                                        method: 'DELETE',
+                                                        headers: {
+                                                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                        }
                                                     });
                                                     prevMessage.remove();
                                                 }
@@ -1417,7 +1482,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                         try {
                                             const response = await fetch(`/api/chat/messages/${messageId}?userId=${currentUser.id}`, {
-                                                method: 'DELETE'
+                                                method: 'DELETE',
+                                                headers: {
+                                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                }
                                             });
 
                                             //console.log('删除请求响应:', response); // 调试日志
@@ -1433,7 +1501,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                                 if (confirm('是否同时删除相关的提问消息？')) {
                                                     const prevMessageId = prevMessage.dataset.messageId;
                                                     await fetch(`/api/chat/messages/${prevMessageId}?userId=${currentUser.id}`, {
-                                                        method: 'DELETE'
+                                                        method: 'DELETE',
+                                                        headers: {
+                                                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                        }
                                                     });
                                                     prevMessage.remove();
                                                 }
@@ -1482,7 +1553,8 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/chat/sessions', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({
                 userId: currentUser.id,
@@ -1582,6 +1654,7 @@ document.addEventListener('DOMContentLoaded', function() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify({ title: newTitle })
         })
@@ -1600,7 +1673,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // 添加删除会话的函数
     function deleteSession(sessionId) {
         fetch(`/api/chat/sessions/${sessionId}?userId=${currentUser.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         })
         .then(response => {
             if (!response.ok) {

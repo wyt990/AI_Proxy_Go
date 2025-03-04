@@ -1,3 +1,5 @@
+window.appReady = false; 
+
 document.addEventListener('DOMContentLoaded', function() {
     //console.log('common.js 已加载');
     // 检查登录状态
@@ -5,6 +7,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const token = localStorage.getItem('token');
 
     if (!token) {
+        console.log('未登录，重定向到登录页0x001');
+        window.location.href = '/login';
+        return;
+    }
+
+    // 简单验证token (JWT格式验证)
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            throw new Error('Invalid token format');
+        }
+        
+        // 检查过期时间
+        const payload = JSON.parse(atob(parts[1]));
+        if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+            throw new Error('Token expired');
+        }
+    } catch (e) {
+        console.error('Token validation failed:', e);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        console.log('未登录，重定向到登录页0x002');
         window.location.href = '/login';
         return;
     }
@@ -93,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     break;
                 case 'chat':
                     //console.log('Navigating to /chat');
-                    window.location.href = '/chat';
+                    window.location.href = `/chat?t=${new Date().getTime()}`;
                     break;
                 case 'logs':
                     window.location.href = '/logs';
@@ -121,6 +145,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateSearchPlaceholder(page);
         }
     });
+
+    window.appReady = true;
+    document.dispatchEvent(new Event('appready'));
 });
 
 function logout() {
@@ -138,6 +165,7 @@ function logout() {
             localStorage.removeItem('token');
             
             // 跳转到登录页
+            console.log('退出登录，重定向到登录页0x003');
             window.location.href = '/login';
         }
     })
@@ -146,6 +174,63 @@ function logout() {
         // 即使请求失败，也清除本地存储并跳转
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        console.log('退出登录，重定向到登录页0x004');
         window.location.href = '/login';
     });
-} 
+}
+
+// 检查和同步cookie与localStorage的token
+function syncTokenState() {
+    const cookieToken = getCookie('token');
+    const localToken = localStorage.getItem('token');
+    
+    // cookie优先级更高，因为服务器可能设置了新的cookie
+    if (cookieToken && cookieToken !== localToken) {
+        localStorage.setItem('token', cookieToken);
+        return true;
+    }
+    
+    // 如果localStorage有token但cookie没有，可能是cookie过期了
+    if (!cookieToken && localToken) {
+        // 尝试重新请求与服务器验证
+        fetch('/api/user/info', {
+            headers: {'Authorization': `Bearer ${localToken}`}
+        })
+        .then(response => {
+            if (!response.ok) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                console.log('检查和同步cookie与localStorage的token，重定向到登录页0x005');
+                window.location.href = '/login';
+            }
+        });
+    }
+    
+    return cookieToken || localToken;
+}
+
+// 获取cookie的辅助函数
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+// 添加全局Ajax请求拦截
+function setupAjaxInterceptor() {
+    const originalFetch = window.fetch;
+    window.fetch = function(url, options = {}) {
+        console.log('Fetch intercepted:', url);
+        return originalFetch(url, options).then(response => {
+            if (response.status === 401) {
+                console.log('收到401响应，但不跳转');
+                // 不做自动跳转，而是在页面显示提示
+                document.body.innerHTML += '<div class="auth-error">登录已过期，<a href="/login">点击重新登录</a></div>';
+            }
+            return response;
+        });
+    };
+}
+
+// 初始化时设置拦截器
+setupAjaxInterceptor(); 

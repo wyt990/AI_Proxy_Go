@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"AI_Proxy_Go/backend/internal/model"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -46,6 +47,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		if token == "" {
 			// 对于 API 请求返回 JSON
 			if strings.HasPrefix(c.Request.URL.Path, "/api/") {
+				log.Printf("未登录，获取用户信息失败")
 				c.JSON(http.StatusUnauthorized, gin.H{
 					"code":  "UNAUTHORIZED",
 					"error": "未登录",
@@ -55,6 +57,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			}
 
 			// 对于页面请求重定向到登录页
+			log.Printf("未登录，重定向到登录页")
 			c.Redirect(http.StatusFound, "/login")
 			c.Abort()
 			return

@@ -359,6 +359,7 @@ func main() {
 
 		if token == "" {
 			// 未登录时重定向到登录页面
+			log.Printf("[main.go][r.GET]未登录，重定向到登录页面")
 			c.Redirect(302, "/login")
 			return
 		}
