@@ -3,7 +3,9 @@ let currentCaptchaId = '';
 // 获取新验证码
 async function refreshCaptcha() {
     try {
-        const response = await fetch('/api/captcha/generate');
+        // 添加时间戳防止缓存
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/api/captcha/generate?t=${timestamp}`);
         const data = await response.json();
         
         //console.log('验证码响应:', data);
@@ -14,7 +16,10 @@ async function refreshCaptcha() {
             const imageData = data.imageBase64.startsWith('data:image') 
                 ? data.imageBase64 
                 : "data:image/png;base64," + data.imageBase64;
-            document.getElementById('captchaImg').src = imageData;
+            const captchaImg = document.getElementById('captchaImg');
+            // 先清空src再设置新值
+            captchaImg.src = '';
+            captchaImg.src = imageData;
         }
     } catch (error) {
         console.error('获取验证码失败:', error);

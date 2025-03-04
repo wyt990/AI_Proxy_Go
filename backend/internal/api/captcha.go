@@ -39,6 +39,10 @@ func (h *CaptchaHandler) GenerateCaptcha(c *gin.Context) {
 	// 添加调试日志
 	//log.Printf("生成新验证码: id=%s", id)
 
+	c.Header("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+	c.Header("Pragma", "no-cache")
+	c.Header("Expires", "0")
+
 	c.JSON(200, gin.H{
 		"captchaId":   id,
 		"imageBase64": b64s,
