@@ -1,0 +1,556 @@
+/* 仪表盘容器 */
+.dashboard-container {
+    padding: 20px;
+    background: #1a1c23;
+    min-height: 100vh;
+}
+
+/* 统计卡片网格 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* 统计卡片样式 */
+.stat-card {
+    background: #2d2f39;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: flex-start;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.stat-icon {
+    font-size: 24px;
+    color: #00bcd4;
+    margin-right: 15px;
+    padding: 10px;
+    background: rgba(0, 188, 212, 0.1);
+    border-radius: 8px;
+}
+
+.stat-content {
+    flex-grow: 1;
+}
+
+.stat-content h3 {
+    margin: 0 0 10px 0;
+    color: #e4e6eb;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 趋势指示器 */
+.trend {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.trend.up {
+    background: rgba(76, 175, 80, 0.1);
+    color: #4caf50;
+}
+
+.trend.down {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.trend.stable {
+    background: rgba(255, 152, 0, 0.1);
+    color: #ff9800;
+}
+
+/* 图表网格 */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+        "token model"
+        "monitor provider"
+        "ranking status";
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* 指定每个图表的位置 */
+.chart-card.token-trend { grid-area: token; }
+.chart-card.model-usage { grid-area: model; }
+.chart-card.request-monitor { grid-area: monitor; }
+.chart-card.provider-stats { grid-area: provider; }
+.chart-card.token-ranking { grid-area: ranking; }
+.chart-card.system-status { grid-area: status; }
+
+/* 图表卡片 */
+.chart-card {
+    background: #1e1e2d;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+/* 调整不同类型卡片的高度 */
+.chart-card.token-trend,
+.chart-card.model-usage,
+.chart-card.request-monitor,
+.chart-card.provider-stats {
+    height: 280px;
+}
+
+.chart-card.token-ranking,
+.chart-card.system-status {
+    height: 240px;
+}
+
+/* 图表头部 */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.chart-header h3 {
+    font-size: 13px;
+    margin: 0;
+    color: #fff;
+}
+
+/* 图表控制按钮 */
+.chart-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.time-btn {
+    padding: 2px 8px;
+    font-size: 12px;
+    background: #2d2d3f;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.time-btn.active {
+    background: #0d6efd;
+}
+
+/* 图表内容区域 */
+.chart-content {
+    height: calc(100% - 35px);  /* 减小内容区域高度 */
+    width: 100%;
+}
+
+/* 数据卡片样式 */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.data-card {
+    background: #2d2f39;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.data-header h3 {
+    color: #e4e6eb;
+    margin: 0;
+    font-size: 16px;
+}
+
+/* Token 消耗排行表格样式 */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.data-table th,
+.data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e4e6eb;
+}
+
+.data-table th {
+    font-weight: 500;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* 系统状态样式 */
+.health-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    padding: 4px 12px;
+    border-radius: 4px;
+}
+
+.health-status.good {
+    color: #4caf50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.status-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.status-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.status-label {
+    color: #e4e6eb;
+    font-size: 14px;
+}
+
+.status-value {
+    color: #e4e6eb;
+    font-size: 14px;
+    text-align: right;
+}
+
+/* 进度条样式 */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    grid-column: 1 / -1;
+}
+
+.progress {
+    height: 100%;
+    background: #00bcd4;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* 刷新按钮样式 */
+.refresh-btn {
+    cursor: pointer;
+    color: #e4e6eb;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.refresh-btn i {
+    font-size: 16px;
+}
+
+/* 动画效果 */
+.animated {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 实时数据指示器 */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #36cfc9;
+}
+
+.pulse {
+    width: 6px;
+    height: 6px;
+}
+
+/* 图表容器 */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* 响应式网格 */
+    gap: 20px;
+}
+
+.chart-card h3 {
+    margin: 0 0 20px;
+    color: #666;
+    font-size: 16px;
+}
+
+.chart-placeholder {
+    height: 300px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    border-radius: 5px;
+}
+
+/* Token排行表格容器 */
+.ranking-wrapper {
+    height: calc(100% - 40px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.ranking-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ranking-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ranking-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* Token排行表格样式 */
+.token-ranking {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.token-ranking th,
+.token-ranking td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 13px;
+    color: #e4e6eb;
+    white-space: nowrap;
+}
+
+/* 添加列宽控制 */
+.token-ranking th:nth-child(1),
+.token-ranking td:nth-child(1) {
+    width: 35%;
+}
+
+.token-ranking th:nth-child(2),
+.token-ranking td:nth-child(2) {
+    width: 25%;
+}
+
+.token-ranking th:nth-child(3),
+.token-ranking td:nth-child(3),
+.token-ranking th:nth-child(4),
+.token-ranking td:nth-child(4) {
+    width: 20%;
+}
+
+.token-ranking th {
+    font-weight: normal;
+    color: #9e9e9e;
+    padding-bottom: 12px;
+}
+
+.rank-num {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.token-ranking tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* 前三名特殊样式 */
+.rank-num.top-1 { background: #ffd700; color: #000; }
+.rank-num.top-2 { background: #c0c0c0; color: #000; }
+.rank-num.top-3 { background: #cd7f32; color: #000; }
+
+/* 空状态提示 */
+.token-ranking .empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 13px;
+}
+
+/* 全屏按钮样式 */
+.fullscreen-btn {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.fullscreen-btn i {
+    color: #fff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+/* 全屏模式样式 */
+.dashboard-container.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    margin: 0;
+    background: #1a1c23;
+    padding: 20px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;  /* 设置为视窗高度 */
+}
+
+/* 全屏模式下的统计卡片网格 */
+.dashboard-container.fullscreen .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 20px;
+    flex-shrink: 0;  /* 防止压缩 */
+}
+
+/* 全屏模式下的图表网格 */
+.dashboard-container.fullscreen .charts-grid {
+    flex: 1;  /* 占用剩余空间 */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, minmax(0, 1fr));  /* 三行等高 */
+    grid-template-areas: 
+        "token model"
+        "monitor provider"
+        "ranking status";
+    gap: 20px;
+    min-height: 0;  /* 允许内容压缩 */
+}
+
+/* 全屏模式下调整图表卡片高度 */
+.dashboard-container.fullscreen .chart-card {
+    height: 100%;  /* 填充父容器高度 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 调整图表内容区域 */
+.dashboard-container.fullscreen .chart-content {
+    flex: 1;  /* 占用剩余空间 */
+    min-height: 0;  /* 允许内容压缩 */
+}
+
+/* 调整排行榜容器 */
+.dashboard-container.fullscreen .ranking-wrapper {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* 调整系统状态卡片 */
+.dashboard-container.fullscreen .status-grid {
+    height: calc(100% - 40px);  /* 减去头部高度 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+/* 调整全屏按钮位置 */
+.fullscreen-btn {
+    position: fixed;
+    right: 30px;
+    top: 30px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: scale(1.1);
+}
+
+.fullscreen-btn i {
+    color: #fff;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.fullscreen-btn.active i {
+    transform: rotate(180deg);
+}
+

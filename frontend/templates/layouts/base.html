@@ -1,0 +1,90 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/common.css">
+    {{ if eq .template "home/index" }}
+        <link rel="stylesheet" href="/static/css/home.css">
+        <link rel="stylesheet" href="/static/css/all.min.css">
+    {{ else if eq .template "users/index" }}
+        <link rel="stylesheet" href="/static/css/users.css">
+    {{ else if eq .template "providers/index" }}
+        <link rel="stylesheet" href="/static/css/providers.css">
+    {{ else if eq .template "models/index" }}
+        <link rel="stylesheet" href="/static/css/models.css">
+    {{ else if eq .template "keys/index" }}
+        <link rel="stylesheet" href="/static/css/keys.css">
+    {{ else if eq .template "chat/index" }}
+        <link rel="stylesheet" href="/static/css/chat.css">
+        <link rel="stylesheet" href="/static/css/all.min.css">
+    {{ else if eq .template "settings/index" }}
+        <link rel="stylesheet" href="/static/css/settings.css">
+    {{ else if eq .template "logs/index" }}
+        <link rel="stylesheet" href="/static/css/logs.css">
+    {{ end }}
+</head>
+<body>
+    <div class="app-container">
+        {{ template "header" . }}
+
+        <div class="main-container">
+            {{ template "sidebar" . }}
+
+            <!-- 主内容区 -->
+            <div class="main-content">
+                {{ if eq .template "home/index" }}
+                    {{ template "home/index" . }}
+                {{ else if eq .template "users/index" }}
+                    {{ template "users/index" . }}
+                {{ else if eq .template "providers/index" }}
+                    {{ template "providers/index" . }}
+                {{ else if eq .template "models/index" }}
+                    {{ template "models/index" . }}
+                {{ else if eq .template "keys/index" }}
+                    {{ template "keys/index" . }}
+                {{ else if eq .template "chat/index" }}
+                    {{ template "chat/index" . }}
+                {{ else if eq .template "settings/index" }}
+                    {{ template "settings/index" . }}
+                {{ else if eq .template "logs/index" }}
+                    {{ template "logs/index" . }}
+                {{ end }}
+            </div>
+        </div>
+
+        {{ template "footer" . }}
+    </div>
+    <script src="/static/js/common.js"></script>
+    {{ if eq .template "home/index" }}
+        <script src="/static/js/echarts.min.js"></script>
+        <script src="/static/js/moment.min.js"></script>
+        <script src="/static/js/home.js"></script>
+    {{ end }}
+    {{ if eq .template "users/index" }}
+        <script src="/static/js/users.js"></script>
+    {{ end }}
+    {{ if eq .template "providers/index" }}
+        <script src="/static/js/providers.js"></script>
+    {{ end }}
+    {{ if eq .template "models/index" }}
+        <script src="/static/js/models.js"></script>
+    {{ end }}
+    {{ if eq .template "keys/index" }}
+        <script src="/static/js/keys.js"></script>
+    {{ end }}
+    {{ if eq .template "chat/index" }}
+        <script src="/static/js/chat.js"></script>
+    {{ end }}
+    {{ if eq .template "settings/index" }}
+        <script src="/static/js/settings.js"></script>
+    {{ end }}
+    {{ if eq .template "logs/index" }}
+        <script src="/static/js/logs.js"></script>
+    {{ end }}
+</body>
+</html>
+{{ end }} 

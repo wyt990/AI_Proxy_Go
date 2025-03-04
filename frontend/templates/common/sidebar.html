@@ -1,0 +1,38 @@
+{{ define "sidebar" }}
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <a href="/home" class="nav-item active" data-page="dashboard">
+            <span class="icon">📊</span>
+            <span>控制台</span>
+        </a>
+        <a href="/providers" class="nav-item" data-page="providers">
+            <span class="icon">🔌</span>
+            <span>服务商管理</span>
+        </a>
+        <a href="/AI_models" class="nav-item" data-page="AI_models">
+            <span class="icon">🤖</span>
+            <span>模型管理</span>
+        </a>
+        <a href="/AI_keys" class="nav-item" data-page="AI_keys">
+            <span class="icon">🔑</span>
+            <span>密钥管理</span>
+        </a>
+        <a href="/chat" class="nav-item" data-page="chat">
+            <span class="icon">💬</span>
+            <span>AI对话</span>
+        </a>
+        <a href="/logs" class="nav-item" data-page="logs">
+            <span class="icon">📝</span>
+            <span>日志查看</span>
+        </a>
+        <a href="/users" class="nav-item" data-page="users">
+            <span class="icon">👥</span>
+            <span>用户管理</span>
+        </a>
+        <a href="/settings" class="nav-item" data-page="settings">
+            <span class="icon">⚙️</span>
+            <span>系统设置</span>
+        </a>
+    </nav>
+</div>
+{{ end }} 

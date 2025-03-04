@@ -1,0 +1,28 @@
+{{ define "footer" }}
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <p>&copy; 2025 {{ .title }}. All rights reserved.</p>
+            <p>
+                Version <span id="version">-</span>
+                <span id="buildInfo" class="build-info"></span>
+            </p>
+        </div>
+    </div>
+</footer>
+<script>
+    // 获取版本号
+    fetch('/api/version')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('version').textContent = data.version;
+            const buildInfo = document.getElementById('buildInfo');
+            if (data.buildTime !== 'unknown') {
+                buildInfo.textContent = ` (Build: ${data.buildTime})`;
+            }
+        })
+        .catch(error => {
+            console.error('获取版本号失败:', error);
+        });
+</script>
+{{ end }} 

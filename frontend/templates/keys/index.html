@@ -1,0 +1,121 @@
+{{ define "keys/index" }}
+<div class="keys-container">
+    <div class="keys-header">
+        <h1>密钥管理</h1>
+        <div class="header-actions">
+            <button id="addKeyBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 添加密钥
+            </button>
+        </div>
+    </div>
+
+    <div class="keys-list">
+        <div class="pagination-controls">
+            <label for="pageSize">每页显示:</label>
+            <select id="pageSize">
+                <option value="20">20条</option>
+                <option value="50">50条</option>
+                <option value="100">100条</option>
+            </select>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>所属用户</th>
+                    <th>所属服务商</th>
+                    <th>状态</th>
+                    <th>创建者</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="keysList">
+                <!-- 数据将通过JavaScript动态加载 -->
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevPage" class="btn btn-secondary">上一页</button>
+            <span id="currentPage">1</span>
+            <button id="nextPage" class="btn btn-secondary">下一页</button>
+        </div>
+    </div>
+</div>
+
+<!-- 密钥表单模态框 -->
+<div id="keyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">添加密钥</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="keyForm">
+                <input type="hidden" id="keyId">
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="name">密钥名称</label>
+                        <input type="text" id="name" class="form-control" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="type">类型</label>
+                        <select id="type" class="form-control" required>
+                            <option value="PUBLIC">公钥</option>
+                            <option value="PRIVATE">私钥</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="providerId">所属服务商</label>
+                        <select id="providerId" required>
+                            <option value="">请选择服务商</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="status">状态</label>
+                        <select id="status" required>
+                            <option value="active">启用</option>
+                            <option value="inactive">禁用</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-12">
+                        <label for="keyValue">密钥值</label>
+                        <textarea id="keyValue" required rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="rateLimit">请求限制（每分钟）</label>
+                        <input type="number" id="rateLimit" min="0" value="0" class="form-control">
+                        <small class="form-text text-muted">0表示使用服务商默认限制</small>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="quotaLimit">配额限制（总量）</label>
+                        <input type="number" id="quotaLimit" min="0" value="0" class="form-control">
+                        <small class="form-text text-muted">0表示无限制</small>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="expireTime">过期时间</label>
+                        <input type="datetime-local" id="expireTime" class="form-control">
+                        <small class="form-text text-muted">留空表示永不过期</small>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+            <button type="button" class="btn btn-primary" onclick="saveKey()">保存</button>
+        </div>
+    </div>
+</div>
+{{ end }} 

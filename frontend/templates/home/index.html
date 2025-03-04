@@ -1,0 +1,188 @@
+{{ define "home/index" }}
+<div class="dashboard-container">
+    <!-- 添加全屏按钮到容器顶层 -->
+    <div class="fullscreen-btn">
+        <i class="fas fa-expand"></i>
+    </div>
+
+    <!-- 顶部统计卡片 -->
+    <div class="stats-grid">
+        <div class="stat-card animated" data-stat="todayRequests">
+            <div class="stat-icon">
+                <i class="fas fa-terminal"></i>
+            </div>
+            <div class="stat-content">
+                <h3>今日请求</h3>
+                <div class="stat-value">
+                    <span class="number-animate">0</span>
+                    <span class="trend">
+                        <i class="fas fa-arrow-up"></i>
+                        0%
+                    </span>
+                </div>
+                <div class="stat-chart mini-chart"></div>
+            </div>
+        </div>
+
+        <div class="stat-card animated" data-stat="todayDialogs">
+            <div class="stat-icon">
+                <i class="fas fa-comment-dots"></i>
+            </div>
+            <div class="stat-content">
+                <h3>今日对话量</h3>
+                <div class="stat-value">
+                    <span class="number-animate">0</span>
+                    <span class="trend">
+                        <i class="fas fa-arrow-up"></i>
+                        0%
+                    </span>
+                </div>
+                <div class="stat-chart mini-chart"></div>
+            </div>
+        </div>
+
+        <div class="stat-card animated" data-stat="avgResponseTime">
+            <div class="stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-content">
+                <h3>平均响应时间</h3>
+                <div class="stat-value">
+                    <span class="number-animate">0</span>ms
+                    <span class="trend">
+                        <i class="fas fa-arrow-down"></i>
+                        0%
+                    </span>
+                </div>
+                <div class="stat-chart mini-chart"></div>
+            </div>
+        </div>
+
+        <div class="stat-card animated" data-stat="systemLoad">
+            <div class="stat-icon">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <div class="stat-content">
+                <h3>系统负载</h3>
+                <div class="stat-value">
+                    <span class="number-animate">0</span>%
+                    <span class="trend">
+                        <i class="fas fa-equals"></i>
+                        0%
+                    </span>
+                </div>
+                <div class="stat-chart mini-chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要图表区域 -->
+    <div class="charts-grid">
+        <!-- Token 使用趋势 -->
+        <div class="chart-card token-trend">
+            <div class="chart-header">
+                <h3>Token 使用趋势</h3>
+                <div class="chart-controls">
+                    <button class="time-btn active" data-range="day">日</button>
+                    <button class="time-btn" data-range="week">周</button>
+                    <button class="time-btn" data-range="month">月</button>
+                </div>
+            </div>
+            <div id="tokenTrendChart" class="chart-content"></div>
+        </div>
+
+        <!-- 模型使用分布 -->
+        <div class="chart-card model-usage">
+            <div class="chart-header">
+                <h3>模型使用分布</h3>
+            </div>
+            <div id="modelUsageChart" class="chart-content"></div>
+        </div>
+
+        <!-- 实时请求监控 -->
+        <div class="chart-card request-monitor">
+            <div class="chart-header">
+                <h3>实时请求监控</h3>
+                <div class="status-indicator">
+                    <span class="pulse"></span>
+                    <span>实时数据</span>
+                </div>
+            </div>
+            <div id="requestMonitorChart" class="chart-content"></div>
+        </div>
+
+        <!-- 服务商统计 -->
+        <div class="chart-card provider-stats">
+            <div class="chart-header">
+                <h3>服务商与模型使用统计</h3>
+                <div class="chart-controls">
+                    <button class="time-btn active" data-range="day">日</button>
+                    <button class="time-btn" data-range="week">周</button>
+                    <button class="time-btn" data-range="month">月</button>
+                </div>
+            </div>
+            <div id="providerStatsChart" class="chart-content"></div>
+        </div>
+
+        <!-- Token消耗排行卡片 -->
+        <div class="chart-card token-ranking">
+            <div class="chart-header">
+                <h3>Token 消耗排行</h3>
+                <div class="refresh-btn">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+            </div>
+            <div class="ranking-wrapper">
+                <table class="token-ranking">
+                    <thead>
+                        <tr>
+                            <th>用户</th>
+                            <th>总消耗</th>
+                            <th>占比</th>
+                            <th>趋势</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 数据会通过 JavaScript 动态插入 -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 系统状态 -->
+        <div class="chart-card system-status">
+            <div class="chart-header">
+                <h3>系统状态</h3>
+                <div class="health-status good">
+                    <i class="fas fa-check-circle"></i>
+                    运行正常
+                </div>
+            </div>
+            <div class="status-grid">
+                <!-- 系统状态内容 -->
+                <div class="status-item" data-type="cpu">
+                    <div class="status-label">CPU 使用率</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <div class="status-value">0%</div>
+                </div>
+                <div class="status-item" data-type="memory">
+                    <div class="status-label">内存使用率</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <div class="status-value">0%</div>
+                </div>
+                <div class="status-item" data-type="api">
+                    <div class="status-label">API 健康度</div>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 0%"></div>
+                    </div>
+                    <div class="status-value">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }} 

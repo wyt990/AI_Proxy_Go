@@ -1,0 +1,124 @@
+/* 系统设置页面样式 */
+.settings-page {
+    padding: 20px;
+}
+
+.settings-header {
+    margin-bottom: 20px;
+}
+
+.settings-content {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 标签栏样式 */
+.settings-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 20px;
+}
+
+.settings-tabs .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 14px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.settings-tabs .tab-btn:hover {
+    color: #1890ff;
+}
+
+.settings-tabs .tab-btn.active {
+    color: #1890ff;
+}
+
+.settings-tabs .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #1890ff;
+}
+
+/* 标签面板样式 */
+.tab-panels {
+    min-height: 300px;
+}
+
+.tab-panel {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+}
+
+/* Redis设置表单样式 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.form-control:focus {
+    border-color: #1890ff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #1890ff;
+    color: white;
+}
+
+.btn-secondary {
+    background: #f0f0f0;
+    color: #666;
+}
+
+.btn:hover {
+    opacity: 0.8;
+} 

@@ -1,0 +1,189 @@
+{{ define "providers/index" }}
+<div class="providers-container">
+    <div class="providers-header">
+        <h1>服务商管理</h1>
+        <div class="header-actions">
+            <button id="addProviderBtn" class="btn btn-primary btn-icon">
+                <i class="fas fa-plus"></i> 添加服务商
+            </button>
+        </div>
+    </div>
+
+    <div class="providers-toolbar">
+        <div class="page-size-selector">
+            每页显示：
+            <select id="pageSize">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="providers-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>类型</th>
+                    <th>基础URL</th>
+                    <th>认证类型</th>
+                    <th>请求限制</th>
+                    <th>重试设置</th>
+                    <th>最后检查</th>
+                    <th>状态</th>
+                    <th>错误信息</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="providersList">
+                <!-- 数据将通过JavaScript动态加载 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" id="pagination">
+        <!-- 分页将通过JavaScript动态加载 -->
+    </div>
+
+    <!-- 服务商类型说明 -->
+    <div class="provider-types-info">
+        <h3>服务商类型说明</h3>
+        <div class="info-cards">
+            <div class="info-card">
+                <div class="card-header">
+                    <span class="card-icon">🌟</span>
+                    <h4>OpenAI</h4>
+                </div>
+                <p>官方 OpenAI API，支持完整功能：</p>
+                <ul>
+                    <li>函数调用（Function Calling）</li>
+                    <li>图像生成（DALL-E）</li>
+                    <li>语音转文字（Whisper）</li>
+                    <li>文本嵌入（Embeddings）</li>
+                </ul>
+            </div>
+            
+            <div class="info-card">
+                <div class="card-header">
+                    <span class="card-icon">🔄</span>
+                    <h4>OpenAI 兼容</h4>
+                </div>
+                <p>使用 OpenAI 兼容格式的服务商：</p>
+                <ul>
+                    <li>DeepSeek - 开源大语言模型</li>
+                    <li>Ollama - 本地模型部署工具</li>
+                    <li>LM Studio - 本地模型运行平台</li>
+                </ul>
+                <p class="note">* 仅支持基础对话功能</p>
+            </div>
+            
+            <div class="info-card">
+                <div class="card-header">
+                    <span class="card-icon">🌐</span>
+                    <h4>其他服务商</h4>
+                </div>
+                <p>使用独特 API 格式的服务商：</p>
+                <ul>
+                    <li>Anthropic - Claude 系列模型</li>
+                    <li>Google Gemini - Gemini Pro/Ultra</li>
+                    <li>百度文心 - 文心一言系列</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加/编辑服务商模态框 -->
+<div class="modal" id="providerModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">添加服务商</h2>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="providerForm">
+                <input type="hidden" id="providerId">
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="name">服务商名称</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="type">服务商类型</label>
+                        <select id="type" required>
+                            <option value="OPENAI">OpenAI</option>
+                            <option value="OPENAI_COMPATIBLE">OpenAI兼容</option>
+                            <option value="ANTHROPIC">Anthropic</option>
+                            <option value="GoogleGemini">Google Gemini</option>
+                            <option value="BAIDU">百度</option>
+                            <option value="CUSTOM">自定义</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="requestFormat">请求数据格式(JSON Schema)</label>
+                    <textarea id="requestFormat" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="responseFormat">响应数据格式(JSON Schema)</label>
+                    <textarea id="responseFormat" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="authFormat">认证格式(JSON Schema)</label>
+                    <textarea id="authFormat" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="headers">请求头模板(JSON)</label>
+                    <textarea id="headers"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="baseURL">API基础URL</label>
+                        <input type="url" id="baseURL" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="authType">认证类型</label>
+                        <select id="authType" required>
+                            <option value="API_KEY">API Key</option>
+                            <option value="OAUTH">OAuth</option>
+                            <option value="JWT">JWT</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="proxyMode">代理模式</label>
+                        <select id="proxyMode" required>
+                            <option value="AGENT">代理模式</option>
+                            <option value="FORWARD">转发模式</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="rateLimit">请求限制(次/分钟)</label>
+                        <input type="number" id="rateLimit" value="60" min="0">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="timeout">超时时间(秒)</label>
+                        <input type="number" id="timeout" value="30" min="1">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="retryCount">重试次数</label>
+                        <input type="number" id="retryCount" value="3" min="0">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="retryInterval">重试间隔(秒)</label>
+                        <input type="number" id="retryInterval" value="1" min="1">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close-btn">取消</button>
+            <button type="button" class="btn btn-primary" id="saveProviderBtn">保存</button>
+        </div>
+    </div>
+</div>
+{{ end }} 

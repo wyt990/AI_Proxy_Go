@@ -1,0 +1,15 @@
+server:
+    host: 0.0.0.0
+    port: 8341
+database:
+    type: mysql
+    host: localhost
+    port: 3306
+    username: AI_Proxy_Go
+    password: Pc2ccw30
+    database: AI_Proxy_Go
+redis:
+    host: localhost
+    port: 6379
+    password: ""
+    db: 0

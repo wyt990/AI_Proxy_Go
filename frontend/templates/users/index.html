@@ -1,0 +1,102 @@
+{{ define "users/index" }}
+<div class="users-container">
+    <div class="users-header">
+        <h1>用户管理</h1>
+        <button id="addUserBtn" class="btn btn-primary">
+            <i class="fas fa-plus"></i> 添加用户
+        </button>
+    </div>
+
+    <div class="users-toolbar">
+        <div class="page-size-selector">
+            每页显示：
+            <select id="userPageSize">
+                <option value="20">20条</option>
+                <option value="50">50条</option>
+                <option value="100">100条</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="users-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>角色</th>
+                    <th>状态</th>
+                    <th>最后登录</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="usersTableBody">
+                <!-- 用户列表将通过JavaScript动态加载 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <button id="userPrevPage" class="btn btn-outline">
+            <i class="fas fa-chevron-left"></i> 上一页
+        </button>
+        <span id="userPageInfo">第 1 页</span>
+        <button id="userNextPage" class="btn btn-outline">
+            下一页 <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>
+
+<!-- 用户表单模态框 -->
+<div id="userFormModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="userModalTitle">添加用户</h2>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="userForm">
+                <input type="hidden" id="userId">
+                <div class="form-group">
+                    <label for="userUsername">用户名</label>
+                    <input type="text" id="userUsername" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">密码</label>
+                    <input type="password" id="userPassword">
+                    <small>编辑用户时留空表示不修改密码</small>
+                </div>
+                <div class="form-group">
+                    <label for="userFullName">姓名</label>
+                    <input type="text" id="userFullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">邮箱</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">角色</label>
+                    <select id="userRole" required>
+                        <option value="user">普通用户</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userStatus">状态</label>
+                    <select id="userStatus" required>
+                        <option value="1">启用</option>
+                        <option value="0">禁用</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close-btn">取消</button>
+            <button type="button" class="btn btn-primary" id="saveUserBtn">保存</button>
+        </div>
+    </div>
+</div>
+{{ end }} 

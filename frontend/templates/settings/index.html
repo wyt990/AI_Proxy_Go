@@ -1,0 +1,282 @@
+{{ define "settings/index" }}
+<div class="settings-page">
+    <div class="settings-header">
+        <h2>系统设置</h2>
+    </div>
+    <div class="settings-content">
+        <!-- 标签栏 -->
+        <div class="settings-tabs">
+            <button class="tab-btn active" data-tab="system">系统设置</button>
+            <button class="tab-btn" data-tab="chat">对话设置</button>
+            <button class="tab-btn" data-tab="search">搜索设置</button>
+            <button class="tab-btn" data-tab="redis">Redis设置</button>
+        </div>
+
+        <!-- 标签内容 -->
+        <div class="tab-panels">
+            <!-- 系统设置面板 -->
+            <div class="tab-panel active" id="system-panel">
+                <div class="settings-section">
+                    <!-- 系统设置内容将在这里添加 -->
+                </div>
+            </div>
+
+            <!-- 对话设置面板 -->
+            <div class="tab-panel" id="chat-panel">
+                <div class="settings-section">
+                    <form id="chatSettingsForm">
+                        <!-- AI请求控制 -->
+                        <h3>AI请求控制</h3>
+                        <div class="form-group">
+                            <label for="aiRequestTimeout">请求超时时间(秒)</label>
+                            <input type="number" 
+                                   id="aiRequestTimeout" 
+                                   name="ai.request_timeout" 
+                                   class="form-control" 
+                                   min="30" 
+                                   max="600">
+                            <small class="form-text text-muted">超过此时间将中断请求，建议设置在30-300秒之间</small>
+                        </div>
+
+                        <!-- 会话控制 -->
+                        <h3>会话控制</h3>
+                        <div class="form-group">
+                            <label for="sessionContextLength">上下文最大条数</label>
+                            <input type="number" 
+                                   id="sessionContextLength" 
+                                   name="session.context_length" 
+                                   class="form-control" 
+                                   min="1" 
+                                   max="10">
+                            <small class="form-text text-muted">影响AI回复的上下文理解，数值越大记忆越长，但会增加API调用成本</small>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">保存设置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 搜索设置面板 -->
+            <div class="tab-panel" id="search-panel">
+                <div class="settings-section">
+                    <form id="searchSettingsForm">
+                        <!-- 基础设置 -->
+                        <h3>基础设置</h3>
+                        <div class="form-group">
+                            <label for="searchEngineURL">搜索引擎地址</label>
+                            <input type="text" id="searchEngineURL" name="search.engine_url" class="form-control" 
+                                placeholder="http://127.0.0.1/search?format=json&q=">
+                            <small class="form-text text-muted">仅支持 SearXNG 搜索引擎</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchResultCount">参考记录数</label>
+                            <input type="number" id="searchResultCount" name="search.result_count" class="form-control" 
+                                min="1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchMaxKeywords">最大关键词字数</label>
+                            <input type="number" id="searchMaxKeywords" name="search.max_keywords" class="form-control" 
+                                min="1" max="100">
+                            <small class="form-text text-muted">用户输入超过此字数会自动提炼</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="searchConcurrency">并发搜索进程数</label>
+                            <input type="number" id="searchConcurrency" name="search.concurrency" class="form-control" 
+                                min="1" max="10">
+                        </div>
+
+                        <!-- 性能设置 -->
+                        <h3>性能设置</h3>
+                        <div class="form-group">
+                            <label for="searchTimeout">搜索超时时间(秒)</label>
+                            <input type="number" id="searchTimeout" name="search.timeout" class="form-control" 
+                                min="1" max="60">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchRetryCount">失败重试次数</label>
+                            <input type="number" id="searchRetryCount" name="search.retry_count" class="form-control" 
+                                min="0" max="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="searchCacheDuration">缓存时间(秒)</label>
+                            <input type="number" id="searchCacheDuration" name="search.cache_duration" class="form-control" 
+                                min="0" max="86400">
+                        </div>
+
+                        <!-- 权重设置 -->
+                        <h3>来源权重</h3>
+                        <div class="form-group">
+                            <label for="weightOfficial">官方网站权重</label>
+                            <input type="number" id="weightOfficial" name="search.weight.official" class="form-control" 
+                                min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="weightEdu">教育机构权重</label>
+                            <input type="number" id="weightEdu" name="search.weight.edu" class="form-control" 
+                                min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="weightNews">新闻网站权重</label>
+                            <input type="number" id="weightNews" name="search.weight.news" class="form-control" 
+                                min="0" max="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="weightPortal">门户网站权重</label>
+                            <input type="number" id="weightPortal" name="search.weight.portal" class="form-control" 
+                                min="0" max="10">
+                        </div>
+
+                        <!-- 时效性权重 -->
+                        <h3>时效性权重</h3>
+                        <div class="form-group">
+                            <label for="timeWeightDay">24小时内权重</label>
+                            <input type="number" id="timeWeightDay" name="search.time_weight.day" class="form-control" 
+                                min="-5" max="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="timeWeightWeek">一周内权重</label>
+                            <input type="number" id="timeWeightWeek" name="search.time_weight.week" class="form-control" 
+                                min="-5" max="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="timeWeightMonth">一月内权重</label>
+                            <input type="number" id="timeWeightMonth" name="search.time_weight.month" class="form-control" 
+                                min="-5" max="5">
+                        </div>
+                        <div class="form-group">
+                            <label for="timeWeightYear">一年内权重</label>
+                            <input type="number" id="timeWeightYear" name="search.time_weight.year" class="form-control" 
+                                min="-5" max="5">
+                        </div>
+
+                        <!-- 过滤设置 -->
+                        <h3>过滤设置</h3>
+                        <div class="form-group">
+                            <label for="minContentLength">最小内容长度</label>
+                            <input type="number" id="minContentLength" name="search.min_content_length" class="form-control" 
+                                min="0" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxSummaryLength">最大摘要长度</label>
+                            <input type="number" id="maxSummaryLength" name="search.max_summary_length" class="form-control" 
+                                min="50" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="filterDomains">需要过滤的域名</label>
+                            <textarea id="filterDomains" name="search.filter_domains" class="form-control" 
+                                placeholder="每行一个域名"></textarea>
+                            <small class="form-text text-muted">每行输入一个需要过滤的域名</small>
+                        </div>
+
+                        <!-- 搜索质量控制 -->
+                        <h3>搜索质量控制</h3>
+                        <div class="form-group">
+                            <label for="minTitleLength">最小标题长度</label>
+                            <input type="number" id="minTitleLength" name="search.min_title_length" class="form-control" 
+                                min="1" max="100">
+                            <small class="form-text text-muted">标题长度小于此值的结果将被过滤</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="maxResults">最大返回结果数</label>
+                            <input type="number" id="maxResults" name="search.max_results" class="form-control" 
+                                min="1" max="100">
+                        </div>
+                        <div class="form-group">
+                            <label for="minRelevanceScore">最低相关度分数</label>
+                            <input type="number" id="minRelevanceScore" name="search.min_relevance_score" class="form-control" 
+                                min="0" max="1" step="0.1">
+                            <small class="form-text text-muted">范围0-1，越大表示要求越相关</small>
+                        </div>
+
+                        <!-- 缓存控制 -->
+                        <h3>缓存控制</h3>
+                        <div class="form-group">
+                            <label for="cacheCleanupInterval">缓存清理间隔(秒)</label>
+                            <input type="number" id="cacheCleanupInterval" name="search.cache_cleanup_interval" class="form-control" 
+                                min="60" max="86400">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxCacheSize">最大缓存条目数</label>
+                            <input type="number" id="maxCacheSize" name="search.max_cache_size" class="form-control" 
+                                min="100" max="100000">
+                        </div>
+
+                        <!-- 请求控制 -->
+                        <h3>请求控制</h3>
+                        <div class="form-group">
+                            <label for="rateLimit">每分钟请求限制</label>
+                            <input type="number" id="rateLimit" name="search.rate_limit" class="form-control" 
+                                min="1" max="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxRetryInterval">最大重试间隔(秒)</label>
+                            <input type="number" id="maxRetryInterval" name="search.max_retry_interval" class="form-control" 
+                                min="1" max="300">
+                        </div>
+                        <div class="form-group">
+                            <label for="connectionTimeout">连接超时时间(秒)</label>
+                            <input type="number" id="connectionTimeout" name="search.connection_timeout" class="form-control" 
+                                min="1" max="60">
+                        </div>
+
+                        <!-- 内容过滤 -->
+                        <h3>内容过滤</h3>
+                        <div class="form-group">
+                            <label for="blockedKeywords">屏蔽关键词</label>
+                            <textarea id="blockedKeywords" name="search.blocked_keywords" class="form-control" 
+                                placeholder="使用逗号分隔多个关键词"></textarea>
+                            <small class="form-text text-muted">包含这些关键词的结果将被过滤</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="requiredKeywords">必需关键词</label>
+                            <textarea id="requiredKeywords" name="search.required_keywords" class="form-control" 
+                                placeholder="使用逗号分隔多个关键词"></textarea>
+                            <small class="form-text text-muted">结果必须包含这些关键词之一</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="languageFilter">语言过滤</label>
+                            <input type="text" id="languageFilter" name="search.language_filter" class="form-control" 
+                                placeholder="zh,en">
+                            <small class="form-text text-muted">使用逗号分隔多种语言代码</small>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">保存设置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Redis设置面板 -->
+            <div class="tab-panel" id="redis-panel">
+                <div class="settings-section">
+                    <form id="redisSettingsForm">
+                        <div class="form-group">
+                            <label for="redisHost">服务器地址</label>
+                            <input type="text" id="redisHost" name="redis.host" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="redisPort">端口</label>
+                            <input type="number" id="redisPort" name="redis.port" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="redisPassword">密码</label>
+                            <input type="password" id="redisPassword" name="redis.password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="redisDB">数据库索引</label>
+                            <input type="number" id="redisDB" name="redis.db" class="form-control">
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" id="testRedisBtn" class="btn btn-secondary">测试连接</button>
+                            <button type="submit" class="btn btn-primary">保存设置</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }} 

@@ -1,0 +1,133 @@
+{{ define "models/index" }}
+<div class="models-container">
+    <div class="models-header">
+        <h1>模型管理</h1>
+        <div class="header-actions">
+            <button id="addModelBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 添加模型
+            </button>
+        </div>
+    </div>
+
+    <div class="models-list">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>所属服务商</th>
+                    <th>模型ID</th>
+                    <th>模型类型</th>
+                    <th>状态</th>
+                    <th>最大Token</th>
+                    <th>价格(输入/输出)</th>
+                    <th>排序</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="modelsList">
+                <!-- 数据将通过JavaScript动态加载 -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- 模型表单模态框 -->
+<div id="modelModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modalTitle">添加模型</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-body">
+            <form id="modelForm">
+                <input type="hidden" id="modelId">
+                
+                <div class="form-row">
+                    <div class="form-group col-6">
+                        <label for="name">模型名称</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group col-6">
+                        <label for="ModelID">模型ID</label>
+                        <input type="text" id="ModelID" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="providerId">所属服务商</label>
+                        <select id="providerId" required>
+                            <!-- 服务商列表将通过JavaScript动态加载 -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group col-4">
+                        <label for="type">模型类型</label>
+                        <select id="type" required>
+                            <option value="chat">对话</option>
+                            <option value="text2image">文生图</option>
+                            <option value="image2image">图生图</option>
+                            <option value="audio">语音</option>
+                            <option value="video">视频</option>
+                            <option value="embedding">嵌入</option>
+                            <option value="tool">工具</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-4">
+                        <label for="status">状态</label>
+                        <select id="status" required>
+                            <option value="NORMAL">正常</option>
+                            <option value="DISABLED">禁用</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="maxTokens">最大Token数</label>
+                        <input type="number" id="maxTokens" value="0" min="0">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="inputPrice">输入价格(每1M token)</label>
+                        <input type="number" id="inputPrice" value="0" min="0" step="0.000001">
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="outputPrice">输出价格(每1M token)</label>
+                        <input type="number" id="outputPrice" value="0" min="0" step="0.000001">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">描述</label>
+                    <textarea id="description"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="parameters">模型参数(JSON)</label>
+                    <textarea id="parameters" 
+                        placeholder="选择服务商后将自动加载参数模板"
+                        spellcheck="false"
+                        style="font-family: monospace; min-height: 150px;"
+                    ></textarea>
+                    <small class="form-text text-muted">
+                        请根据服务商的API文档要求填写相应参数。参数格式必须是有效的JSON。
+                    </small>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-4">
+                        <label for="sort">排序</label>
+                        <input type="number" id="sort" value="0">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+            <button type="button" class="btn btn-primary" onclick="saveModel()">保存</button>
+        </div>
+    </div>
+</div>
+{{ end }} 

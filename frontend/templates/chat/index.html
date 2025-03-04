@@ -1,0 +1,88 @@
+{{ define "chat/index" }}
+<div class="chat-container">
+    <div class="chat-sidebar">
+        <!-- 服务商选择 -->
+        <div class="provider-select">
+            <label for="providerId">选择服务商</label>
+            <select id="providerId" class="form-control">
+                <option value="">请选择服务商</option>
+            </select>
+        </div>
+
+        <!-- 模型选择 -->
+        <div class="model-select">
+            <label for="modelId">选择模型</label>
+            <select id="modelId" class="form-control" disabled>
+                <option value="">请先选择服务商</option>
+            </select>
+        </div>
+
+        <!-- 密钥选择 -->
+        <div class="key-select">
+            <label for="keyId">选择密钥</label>
+            <select id="keyId" class="form-control" disabled>
+                <option value="">请先选择服务商</option>
+            </select>
+        </div>
+
+        <!-- 添加功能开关按钮组 -->
+        <div class="feature-toggles">
+            <div class="toggle-button-group">
+                <button id="internetToggle" class="toggle-btn" title="启用联网搜索" style="display: none;">
+                    <i class="fas fa-globe"></i> 联网搜索
+                </button>
+                <button id="deepThoughtToggle" class="toggle-btn" title="启用深度思考" style="display: none;">
+                    <i class="fas fa-brain"></i> 深度思考
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-main">
+        <!-- 添加标签栏 -->
+        <div class="chat-tabs">
+            <button class="tab-btn active" data-tab="chat">对话</button>
+            <button class="tab-btn" data-tab="settings">设置</button>
+        </div>
+
+        <!-- 标签内容区域 -->
+        <div class="tab-content">
+            <!-- 对话面板 -->
+            <div class="tab-pane active" id="chat-pane">
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input">
+                    <textarea id="messageInput" placeholder="请输入消息..." disabled></textarea>
+                    <button id="sendButton" disabled>发送</button>
+                </div>
+            </div>
+            
+            <!-- 设置面板 -->
+            <div class="tab-pane" id="settings-pane">
+                <div class="settings-container">
+                    <div class="setting-item">
+                        <label class="setting-label">
+                            <input type="checkbox" id="contextCheckbox">
+                            联系上下文
+                        </label>
+                        <div class="setting-description">
+                            启用后，AI 将考虑之前的对话内容来理解和回答问题
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加会话列表侧边栏 -->
+    <div class="chat-sessions">
+        <div class="session-header">
+            <h3>会话列表</h3>
+            <button id="newSessionBtn" class="btn btn-primary">新会话</button>
+        </div>
+        <div class="session-list" id="sessionList">
+            <!-- 会话列表将通过 JavaScript 动态加载 -->
+        </div>
+    </div>
+</div>
+<script src="/static/js/marked.min.js"></script>
+{{ end }} 

@@ -1,0 +1,288 @@
+/* 模型管理页面样式 */
+.models-container {
+    padding: 24px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.models-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.models-header h1 {
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 50px auto;
+    padding: 0;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 800px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #374151;
+}
+
+.modal-body {
+    padding: 24px;
+    max-height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.close {
+    color: #9ca3af;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #6b7280;
+}
+
+/* 表单样式 */
+.form-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    min-height: 80px;
+    font-family: monospace;
+}
+
+.form-text {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+}
+
+.text-muted {
+    color: #6b7280;
+}
+
+/* 状态标签样式 */
+.status-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-normal {
+    background-color: #10b981;
+    color: white;
+}
+
+.status-disabled {
+    background-color: #6b7280;
+    color: white;
+}
+
+/* 按钮样式 */
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.btn-primary {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2563eb;
+}
+
+.btn-secondary {
+    background-color: #9ca3af;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #6b7280;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn-edit {
+    background-color: #10b981;
+    color: white;
+    margin-right: 4px;
+}
+
+.btn-edit:hover {
+    background-color: #059669;
+}
+
+.btn-delete {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #dc2626;
+}
+
+/* 表格样式 */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    vertical-align: middle;
+    border-top: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e5e7eb;
+    background-color: #f9fafb;
+    color: #374151;
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+/* 调整列宽 */
+.table th:nth-child(1), /* ID */
+.table td:nth-child(1) {
+    width: 60px;
+}
+
+.table th:nth-child(2), /* 名称 */
+.table td:nth-child(2) {
+    width: 15%;
+}
+
+.table th:nth-child(3), /* 所属服务商 */
+.table td:nth-child(3) {
+    width: 15%;
+}
+
+.table th:nth-child(4), /* 模型ID */
+.table td:nth-child(4) {
+    width: 15%;
+}
+
+.table th:nth-child(5), /* 状态 */
+.table td:nth-child(5) {
+    width: 80px;
+}
+
+.table th:nth-child(6), /* 最大Token */
+.table td:nth-child(6) {
+    width: 100px;
+}
+
+.table th:nth-child(7), /* 价格 */
+.table td:nth-child(7) {
+    width: 120px;
+}
+
+.table th:nth-child(8), /* 排序 */
+.table td:nth-child(8) {
+    width: 80px;
+}
+
+.table th:nth-child(9), /* 操作 */
+.table td:nth-child(9) {
+    width: 120px;
+    text-align: center;
+}
+
+/* 表格容器添加滚动 */
+.models-list {
+    overflow-x: auto;
+    margin: 0 -24px;  /* 抵消容器padding */
+    padding: 0 24px;  /* 恢复内容padding */
+}
+
+/* 调整表格内的按钮间距 */
+.table .btn + .btn {
+    margin-left: 8px;
+} 

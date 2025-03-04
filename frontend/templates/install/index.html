@@ -1,0 +1,142 @@
+{{ define "install/index" }}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }} - {{ .pageTitle }}</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/install.css">
+    <script src="/static/js/axios.min.js"></script>
+</head>
+<body>
+    <div class="install-container">
+        <div class="install-header">
+            <h1>{{ .title }} 安装向导</h1>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="install-steps">
+            <!-- 步骤1：环境检测 -->
+            <div class="step-content" id="step1">
+                <h2>步骤1：系统环境检测</h2>
+                <div id="envChecks">
+                    <div class="check-item">
+                        <span class="check-name">操作系统</span>
+                        <span class="check-status" id="osCheck">检测中...</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-name">CPU</span>
+                        <span class="check-status" id="cpuCheck">检测中...</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-name">内存</span>
+                        <span class="check-status" id="memoryCheck">检测中...</span>
+                    </div>
+                    <div class="check-item">
+                        <span class="check-name">磁盘空间</span>
+                        <span class="check-status" id="diskCheck">检测中...</span>
+                    </div>
+                </div>
+                <div class="step-actions">
+                    <button class="btn btn-primary" onclick="checkEnvironment()">开始检测</button>
+                </div>
+            </div>
+
+            <!-- 步骤2：数据库配置 -->
+            <div class="step-content" id="step2" style="display: none;">
+                <h2>步骤2：数据库配置</h2>
+                <div class="form-group">
+                    <label>数据库类型</label>
+                    <select class="form-control" id="dbType">
+                        <option value="mysql">MySQL</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>服务器地址</label>
+                    <input type="text" class="form-control" id="dbHost" value="localhost">
+                </div>
+                <div class="form-group">
+                    <label>端口号</label>
+                    <input type="number" class="form-control" id="dbPort" value="3306">
+                </div>
+                <div class="form-group">
+                    <label>数据库名</label>
+                    <input type="text" class="form-control" id="dbName" value="AI_Proxy_Go">
+                </div>
+                <div class="form-group">
+                    <label>用户名</label>
+                    <input type="text" class="form-control" id="dbUser" value="root">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" id="dbPassword">
+                </div>
+                <div class="step-actions">
+                    <button class="btn btn-default" onclick="prevStep()">上一步</button>
+                    <button class="btn btn-primary" onclick="testDatabase()">测试连接</button>
+                </div>
+            </div>
+
+            <!-- 步骤3：Redis配置 -->
+            <div class="step-content" id="step3" style="display: none;">
+                <h2>步骤3：Redis配置</h2>
+                <div class="form-group">
+                    <label>服务器地址</label>
+                    <input type="text" class="form-control" id="redisHost" value="localhost">
+                </div>
+                <div class="form-group">
+                    <label>端口号</label>
+                    <input type="number" class="form-control" id="redisPort" value="6379">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <input type="password" class="form-control" id="redisPassword">
+                </div>
+                <div class="form-group">
+                    <label>数据库索引</label>
+                    <input type="number" class="form-control" id="redisDB" value="0">
+                </div>
+                <div class="step-actions">
+                    <button class="btn btn-default" onclick="prevStep()">上一步</button>
+                    <button class="btn btn-primary" onclick="testRedis()">测试连接</button>
+                </div>
+            </div>
+
+            <!-- 步骤4：管理员配置 -->
+            <div class="step-content" id="step4" style="display: none;">
+                <h2>步骤4：管理员账户设置</h2>
+                <div class="form-group">
+                    <label for="adminUsername">用户名</label>
+                    <input type="text" class="form-control" id="adminUsername" placeholder="请输入管理员用户名">
+                </div>
+                <div class="form-group">
+                    <label for="adminName">姓名</label>
+                    <input type="text" class="form-control" id="adminName" placeholder="请输入管理员姓名">
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword">密码</label>
+                    <input type="password" class="form-control" id="adminPassword" placeholder="请输入管理员密码">
+                </div>
+                <div class="form-group">
+                    <label for="adminPasswordConfirm">确认密码</label>
+                    <input type="password" class="form-control" id="adminPasswordConfirm" placeholder="请再次输入密码">
+                </div>
+                <div class="form-group">
+                    <label for="adminEmail">电子邮箱</label>
+                    <input type="email" class="form-control" id="adminEmail" placeholder="请输入管理员邮箱">
+                </div>
+                <div class="step-actions">
+                    <button class="btn btn-default" onclick="prevStep()">上一步</button>
+                    <button class="btn btn-primary" onclick="completeInstall()">完成安装</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/install.js"></script>
+</body>
+</html>
+{{ end }} 
